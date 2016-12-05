@@ -15,9 +15,11 @@ public class Interpreter {
         try (InputStream inp = new FileInputStream(filename)) {
             Parser parser = new Parser(inp);
             java_cup.runtime.Symbol parseTree = parser.parse();
+            // upcast parsing reduction result from Object to Expr type
             Expr program = (Expr) parseTree.value;
+            System.out.println(program);
             System.out.println(program.typecheck(new DefaultTypeEnv()).t);
-            System.out.println(program.eval(new InitialState()));
+            // System.out.println(program.eval(new InitialState()));
         }
         catch (SyntaxError e) {
             System.out.println("syntax error");
@@ -40,20 +42,20 @@ public class Interpreter {
     }
 
     public static void main(String[] args) {
-        System.out.println("fuck");
-/*        interpret("doc/examples/plus.spl");
-        interpret("doc/examples/factorial.spl");
-        interpret("doc/examples/gcd1.spl");
-        interpret("doc/examples/gcd2.spl");
-        interpret("doc/examples/max.spl");
-        interpret("doc/examples/sum.spl");
-        interpret("doc/examples/map.spl");
-        interpret("doc/examples/pcf.sum.spl");
-        interpret("doc/examples/pcf.even.spl");
-        interpret("doc/examples/pcf.minus.spl");
-        interpret("doc/examples/pcf.factorial.spl");
-        interpret("doc/examples/pcf.fibonacci.spl");*/
-        // interpret("doc/examples/pcf.twice.spl");
-        // interpret("doc/examples/pcf.lists.spl");
+        // interpret files under doc dir
+        interpret("doc/examples/plus.spl");
+//        interpret("doc/examples/factorial.spl");
+//        interpret("doc/examples/gcd1.spl");
+//        interpret("doc/examples/gcd2.spl");
+//        interpret("doc/examples/max.spl");
+//        interpret("doc/examples/sum.spl");
+//        interpret("doc/examples/map.spl");
+//        interpret("doc/examples/pcf.sum.spl");
+//        interpret("doc/examples/pcf.even.spl");
+//        interpret("doc/examples/pcf.minus.spl");
+//        interpret("doc/examples/pcf.factorial.spl");
+//        interpret("doc/examples/pcf.fibonacci.spl");
+//        interpret("doc/examples/pcf.twice.spl");
+//        interpret("doc/examples/pcf.lists.spl");
     }
 }

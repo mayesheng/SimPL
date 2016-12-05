@@ -28,7 +28,6 @@ public class AndAlso extends BinaryExpr {
 
     @Override
     public Value eval(State s) throws RuntimeError {
-        // TODO
         return null;
     }
 }

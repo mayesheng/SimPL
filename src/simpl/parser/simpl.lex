@@ -27,7 +27,8 @@ import java_cup.runtime.Symbol;
     if (yystate() == YYCOMMENT) {
         throw new SyntaxError("Comment mismatch, need *) at EOF", yyline, yycolumn);
     }
-    return token(EOF, null);
+    return token(EOF, nul
+    l);
 %eofval}
 
 LineTerm = \n|\r|\r\n

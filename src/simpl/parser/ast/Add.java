@@ -1,9 +1,6 @@
 package simpl.parser.ast;
 
-import simpl.interpreter.IntValue;
-import simpl.interpreter.RuntimeError;
-import simpl.interpreter.State;
-import simpl.interpreter.Value;
+import simpl.interpreter.*;
 
 public class Add extends ArithExpr {
 
@@ -17,7 +14,12 @@ public class Add extends ArithExpr {
 
     @Override
     public Value eval(State s) throws RuntimeError {
-        // TODO
-        return null;
+        Value vl = l.eval(s);
+        Value vr = r.eval(s);
+        if (vl instanceof IntValue && vr instanceof IntValue) {
+            return new IntValue(((IntValue) vl).n + ((IntValue) vr).n);
+        } else {
+            throw new RuntimeError("Arguments of Add should be Int");
+        }
     }
 }

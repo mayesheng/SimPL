@@ -17,10 +17,11 @@ public class Symbol {
     private static HashMap<String, Symbol> dict = new HashMap<String, Symbol>();
 
     /**
-     * Make return the unique symbol associated with a string. Repeated calls to <tt>symbol("abc")</tt> will return the
-     * same Symbol.
+     * Make return the unique symbol associated with a string.
+     * Repeated calls to <tt>symbol("abc")</tt> will return the same Symbol.
      */
     public static Symbol symbol(String n) {
+        /* use string interning here mainly for perf reasons */
         String u = n.intern();
         Symbol s = dict.get(u);
         if (s == null) {
