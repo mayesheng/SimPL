@@ -7,4 +7,8 @@ public class TypeMismatchError extends TypeError {
     public TypeMismatchError() {
         super("Mismatch");
     }
+
+    public TypeMismatchError(Type lhs, Type rhs) {
+        super("Type mismatch: cannot unify" + lhs + " and " + rhs);
+    }
 }

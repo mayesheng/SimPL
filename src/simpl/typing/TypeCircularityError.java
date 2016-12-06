@@ -7,4 +7,8 @@ public class TypeCircularityError extends TypeError {
     public TypeCircularityError() {
         super("Circularity");
     }
+
+    public TypeCircularityError(Type t) {
+        super("Type circularity: on type variable" + t);
+    }
 }

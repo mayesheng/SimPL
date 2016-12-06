@@ -6,12 +6,14 @@ public abstract class Substitution {
 
     public abstract Type apply(Type t);
 
+    /* Identity substitution: return the input type */
     private static final class Identity extends Substitution {
         public Type apply(Type t) {
             return t;
         }
     }
 
+    /* replace substitution: introduce a new mapping tv->t */
     private static final class Replace extends Substitution {
         private TypeVar a;
         private Type t;
@@ -26,6 +28,7 @@ public abstract class Substitution {
         }
     }
 
+    /* compose operation: compose two substitutions */
     private static final class Compose extends Substitution {
         private Substitution f, g;
 

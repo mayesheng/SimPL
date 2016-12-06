@@ -1,5 +1,7 @@
 package simpl.typing;
 
+import com.sun.org.apache.regexp.internal.RE;
+
 public final class RefType extends Type {
 
     public Type t;
@@ -10,26 +12,27 @@ public final class RefType extends Type {
 
     @Override
     public boolean isEqualityType() {
-        // TODO
-        return false;
+        return true;
     }
 
     @Override
     public Substitution unify(Type t) throws TypeError {
-        // TODO
-        return null;
+        if (t instanceof TypeVar) {
+            return t.unify(this);
+        } else if (t instanceof RefType) {
+            return this.t.unify(((RefType) t).t);
+        }
+        throw new TypeMismatchError(this, t);
     }
 
     @Override
     public boolean contains(TypeVar tv) {
-        // TODO
-        return false;
+        return t.contains(tv);
     }
 
     @Override
     public Type replace(TypeVar a, Type t) {
-        // TODO
-        return null;
+        return new RefType(this.t.replace(a, t));
     }
 
     public String toString() {

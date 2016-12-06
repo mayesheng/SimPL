@@ -1,5 +1,7 @@
 package simpl.typing;
 
+import simpl.parser.ast.Pair;
+
 public final class PairType extends Type {
 
     public Type t1, t2;
@@ -11,26 +13,29 @@ public final class PairType extends Type {
 
     @Override
     public boolean isEqualityType() {
-        // TODO
-        return false;
+        return t1.isEqualityType() && t2.isEqualityType();
     }
 
     @Override
     public Substitution unify(Type t) throws TypeError {
-        // TODO
-        return null;
+        if (t instanceof TypeVar) {
+            t.unify(this);
+        } else if (t instanceof PairType) {
+            PairType ct = (PairType) t;
+            /* Doubt: does it matter to compose in this order ??? */
+            t1.unify(ct.t1).compose(t2.unify(ct.t2));
+        }
+        throw new TypeMismatchError(this, t);
     }
 
     @Override
     public boolean contains(TypeVar tv) {
-        // TODO
-        return false;
+        return t1.contains(tv) || t2.contains(tv);
     }
 
     @Override
     public Type replace(TypeVar a, Type t) {
-        // TODO
-        return null;
+        return new PairType(t1.replace(a, t), t1.replace(a, t));
     }
 
     public String toString() {

@@ -18,7 +18,8 @@ final class UnitType extends Type {
         if (t instanceof UnitType) {
             return Substitution.IDENTITY;
         }
-        throw new TypeMismatchError();
+        // throw new TypeMismatchError();
+        throw new TypeMismatchError(this, t);
     }
 
     @Override
