@@ -18,7 +18,8 @@ public class LessEq extends RelExpr {
 
     @Override
     public Value eval(State s) throws RuntimeError {
-        // TODO
-        return null;
+        IntValue lval = (IntValue) l.eval(s);
+        IntValue rval = (IntValue) r.eval(s);
+        return new BoolValue(lval.n <= rval.n);
     }
 }

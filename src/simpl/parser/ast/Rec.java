@@ -32,28 +32,10 @@ public class Rec extends Expr {
         Substitution sub = eRes.s.compose(
                 eRes.s.apply(xTpe).unify(eRes.s.apply(eRes.t)));
         return TypeResult.of(sub, sub.apply(eRes.t));
-
-//        TypeVar a = new TypeVar(false);
-//        TypeResult tr = e.typecheck(TypeEnv.of(E,x,a));
-//
-//        Type t1 = a;
-//        Type t2 = tr.t;
-//
-//        Substitution substitution = tr.s;
-//
-//        t1 = substitution.apply(t1);
-//        t2 = substitution.apply(t2);
-//
-//        substitution = t1.unify(t2).compose(substitution);
-//
-//        Type resultType = substitution.apply(t1);
-//
-//        return TypeResult.of(substitution,resultType);
     }
 
     @Override
     public Value eval(State s) throws RuntimeError {
-        // TODO
-        return null;
+        return e.eval(State.of(new Env(s.E, x, new RecValue(s.E,x,e)), s.M, s.p));
     }
 }

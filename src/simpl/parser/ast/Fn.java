@@ -31,22 +31,10 @@ public class Fn extends Expr {
         Substitution sub = predRes.s;
         return TypeResult.of(sub,
                 new ArrowType(sub.apply(xTpe), sub.apply(predRes.t)));
-//        Type a = new TypeVar(false);//x: a
-//        TypeResult tr2 = e.typecheck(TypeEnv.of(E, x, a));//u==>e:t
-//
-//        Type b = new TypeVar(false);//f: a->b
-//
-//        Substitution substitution = b.unify(tr2.t).compose(tr2.s);//b = t
-//
-//        a = substitution.apply(a);
-//        b = substitution.apply(b);
-//
-//        return TypeResult.of(substitution,new ArrowType(a,b));
     }
 
     @Override
     public Value eval(State s) throws RuntimeError {
-        // TODO
-        return null;
+        return new FunValue(s.E, x, e);
     }
 }

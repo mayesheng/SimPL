@@ -38,7 +38,9 @@ public class OrElse extends BinaryExpr {
 
     @Override
     public Value eval(State s) throws RuntimeError {
-        // TODO
-        return null;
+        BoolValue lval = (BoolValue) l.eval(s);
+        if (lval.b)
+            return new BoolValue(true);
+        return r.eval(s);
     }
 }

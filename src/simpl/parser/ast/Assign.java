@@ -36,7 +36,11 @@ public class Assign extends BinaryExpr {
 
     @Override
     public Value eval(State s) throws RuntimeError {
-        // TODO
-        return null;
+        Value lhs = l.eval(s);
+        if (!(lhs instanceof RefValue))
+            throw new RuntimeError("Runtime: nonref operand on lhs of assign");
+        Value rhs = r.eval(s);
+        s.M.put(((RefValue) lhs).p, rhs);
+        return Value.UNIT;
     }
 }

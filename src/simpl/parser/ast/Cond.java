@@ -48,7 +48,12 @@ public class Cond extends Expr {
 
     @Override
     public Value eval(State s) throws RuntimeError {
-        // TODO
-        return null;
+        Value e1Val = e1.eval(s);
+        if (!(e1Val instanceof BoolValue))
+            throw new RuntimeError("Runtime: nonbool value in cond predicate");
+        if (((BoolValue) e1.eval(s)).b)
+            return e2.eval(s);
+        else
+            return e3.eval(s);
     }
 }

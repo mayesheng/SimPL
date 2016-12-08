@@ -34,7 +34,8 @@ public class Deref extends UnaryExpr {
 
     @Override
     public Value eval(State s) throws RuntimeError {
-        // TODO
-        return null;
+        /* extract ptr from RefType */
+        Integer ptr = ((RefValue) e.eval(s)).p;
+        return s.M.get(ptr);
     }
 }

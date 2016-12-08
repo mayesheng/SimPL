@@ -41,7 +41,8 @@ public class App extends BinaryExpr {
 
     @Override
     public Value eval(State s) throws RuntimeError {
-        // TODO
-        return null;
+        FunValue lval = (FunValue) l.eval(s);
+        Value rval = r.eval(s);
+        return lval.e.eval(State.of(new Env(lval.E, lval.x, rval), s.M, s.p));
     }
 }

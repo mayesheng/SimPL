@@ -7,6 +7,7 @@ public class DefaultTypeEnv extends TypeEnv {
     private TypeEnv E;
 
     public DefaultTypeEnv() {
+        // TODO: may need more type var here
         TypeVar tv1 = new TypeVar(true);
         TypeVar tv2 = new TypeVar(true);
         E = TypeEnv.of(
@@ -24,8 +25,6 @@ public class DefaultTypeEnv extends TypeEnv {
                         Symbol.symbol("pred"), new ArrowType(Type.INT, Type.INT)),
                 Symbol.symbol("succ"), new ArrowType(Type.INT,Type.INT)
         );
-
-        // this.E = TypeEnv.empty;
     }
 
     @Override

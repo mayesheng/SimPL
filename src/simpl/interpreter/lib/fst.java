@@ -11,6 +11,7 @@ import simpl.parser.ast.Expr;
 import simpl.typing.TypeEnv;
 import simpl.typing.TypeError;
 import simpl.typing.TypeResult;
+import simpl.typing.TypeVar;
 
 public class fst extends FunValue {
 

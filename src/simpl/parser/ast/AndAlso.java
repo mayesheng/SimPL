@@ -1,5 +1,6 @@
 package simpl.parser.ast;
 
+import javafx.beans.binding.BooleanBinding;
 import simpl.interpreter.BoolValue;
 import simpl.interpreter.RuntimeError;
 import simpl.interpreter.State;
@@ -36,6 +37,15 @@ public class AndAlso extends BinaryExpr {
 
     @Override
     public Value eval(State s) throws RuntimeError {
-        return null;
+        /* short-circuit eval */
+        Value lval = l.eval(s);
+        if (!(lval instanceof BoolValue))
+            throw new RuntimeError("Runtime: nonbool operand in andalso");
+        if (!((BoolValue) lval).b)
+            return new BoolValue(false);
+        Value rval = r.eval(s);
+        if (!(rval instanceof BoolValue))
+            throw new RuntimeError("Runtime: nonbool operand in andalso");
+        return rval;
     }
 }

@@ -14,12 +14,10 @@ public class Add extends ArithExpr {
 
     @Override
     public Value eval(State s) throws RuntimeError {
-        Value vl = l.eval(s);
-        Value vr = r.eval(s);
-        if (vl instanceof IntValue && vr instanceof IntValue) {
-            return new IntValue(((IntValue) vl).n + ((IntValue) vr).n);
-        } else {
-            throw new RuntimeError("Arguments of Add should be Int");
-        }
+        Value lval = l.eval(s);
+        Value rval = r.eval(s);
+        if (lval instanceof IntValue && rval instanceof IntValue)
+            return new IntValue(((IntValue) lval).n + ((IntValue) rval).n);
+        throw new RuntimeError("Runtime: operands of add is not integer");
     }
 }

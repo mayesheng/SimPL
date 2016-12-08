@@ -1,5 +1,6 @@
 package simpl.parser.ast;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import simpl.interpreter.BoolValue;
 import simpl.interpreter.RuntimeError;
 import simpl.interpreter.State;
@@ -38,7 +39,14 @@ public class Loop extends Expr {
 
     @Override
     public Value eval(State s) throws RuntimeError {
-        // TODO
-        return null;
+        Value predVal = e1.eval(s);
+        /* eval according to spec, may not be efficient */
+        if (predVal instanceof BoolValue) {
+            if (((BoolValue) predVal).b)
+                return new Seq(e2, this).eval(s);
+            else
+                return Value.UNIT;
+        }
+        throw new RuntimeError("Runtime: nonbool value in loop predicate");
     }
 }

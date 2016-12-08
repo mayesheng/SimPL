@@ -29,7 +29,9 @@ public class Not extends UnaryExpr {
 
     @Override
     public Value eval(State s) throws RuntimeError {
-        // TODO
-        return null;
+        Value val = e.eval(s);
+        if (val instanceof BoolValue)
+            return new BoolValue(!((BoolValue) val).b);
+        throw new RuntimeError("Runtime: operand of not is not boolean");
     }
 }

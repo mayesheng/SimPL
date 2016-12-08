@@ -17,7 +17,10 @@ public class Div extends ArithExpr {
 
     @Override
     public Value eval(State s) throws RuntimeError {
-        // TODO
-        return null;
+        Value lval = l.eval(s);
+        Value rval = r.eval(s);
+        if (lval instanceof IntValue && rval instanceof IntValue)
+            return new IntValue(((IntValue) lval).n / ((IntValue) rval).n);
+        throw new RuntimeError("Runtime: operands of div is not integer");
     }
 }

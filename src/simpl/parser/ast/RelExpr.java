@@ -17,7 +17,6 @@ public abstract class RelExpr extends BinaryExpr {
      */
     @Override
     public TypeResult typecheck(TypeEnv E) throws TypeError {
-        // TODO
         TypeResult lRes = l.typecheck(E);
         TypeResult rRes = r.typecheck(E);
         Substitution sub = lRes.s.compose(
