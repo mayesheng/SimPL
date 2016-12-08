@@ -19,11 +19,14 @@ public final class PairType extends Type {
     @Override
     public Substitution unify(Type t) throws TypeError {
         if (t instanceof TypeVar) {
-            t.unify(this);
+            return t.unify(this);
         } else if (t instanceof PairType) {
             PairType ct = (PairType) t;
-            /* Doubt: does it matter to compose in this order ??? */
-            t1.unify(ct.t1).compose(t2.unify(ct.t2));
+            Substitution sub1 = t1.unify(ct.t1);
+            Substitution sub2 = t2.unify(ct.t2);
+            Type tpe1 = sub2.apply(t1);
+            Type tpe2 = sub1.apply(t2);
+            return tpe1.unify(ct.t1).compose(tpe2.unify(ct.t2));
         }
         throw new TypeMismatchError(this, t);
     }

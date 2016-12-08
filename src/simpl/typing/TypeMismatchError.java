@@ -11,4 +11,8 @@ public class TypeMismatchError extends TypeError {
     public TypeMismatchError(Type lhs, Type rhs) {
         super("Type mismatch: cannot unify" + lhs + " and " + rhs);
     }
+
+    public TypeMismatchError(String msg) {
+        super(msg);
+    }
 }

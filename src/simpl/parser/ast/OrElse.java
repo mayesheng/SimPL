@@ -10,6 +10,8 @@ import simpl.typing.TypeEnv;
 import simpl.typing.TypeError;
 import simpl.typing.TypeResult;
 
+import java.util.concurrent.ThreadPoolExecutor;
+
 public class OrElse extends BinaryExpr {
 
     public OrElse(Expr l, Expr r) {
@@ -20,10 +22,18 @@ public class OrElse extends BinaryExpr {
         return "(" + l + " orelse " + r + ")";
     }
 
+    /* (G|-u1->G|-e1:t1,q1; G|-u2->G|-e2:t2,q2)
+     * ==> (G|-u1 orelse u2 -> G|-e1 orelse e2:BOOL,q1Uq2U{t1=t2=BOOL})
+     */
     @Override
     public TypeResult typecheck(TypeEnv E) throws TypeError {
-        // TODO
-        return null;
+        TypeResult lRes = l.typecheck(E);
+        TypeResult rRes = r.typecheck(E);
+        Substitution sub = lRes.s.compose(
+                rRes.s.compose(
+                        lRes.t.unify(Type.BOOL).compose(
+                                rRes.t.unify(Type.BOOL))));
+        return TypeResult.of(sub, Type.BOOL);
     }
 
     @Override

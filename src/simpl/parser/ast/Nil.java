@@ -3,6 +3,7 @@ package simpl.parser.ast;
 import simpl.interpreter.RuntimeError;
 import simpl.interpreter.State;
 import simpl.interpreter.Value;
+import simpl.parser.Symbol;
 import simpl.typing.ListType;
 import simpl.typing.TypeEnv;
 import simpl.typing.TypeError;
@@ -15,10 +16,12 @@ public class Nil extends Expr {
         return "nil";
     }
 
+    /* ==> (G|-Nil -> Nil:List(a) */
     @Override
     public TypeResult typecheck(TypeEnv E) throws TypeError {
-        // TODO
-        return null;
+        /* polymorphic List type */
+        TypeVar a = new TypeVar(true);
+        return TypeResult.of(new ListType(a));
     }
 
     @Override

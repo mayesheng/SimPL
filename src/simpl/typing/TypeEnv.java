@@ -6,6 +6,7 @@ public abstract class TypeEnv {
 
     public abstract Type get(Symbol x);
 
+    /* use Java anonymous class: actually a closure! */
     public static TypeEnv of(final TypeEnv E, final Symbol x, final Type t) {
         return new TypeEnv() {
             public Type get(Symbol x1) {

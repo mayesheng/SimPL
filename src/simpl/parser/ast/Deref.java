@@ -22,10 +22,14 @@ public class Deref extends UnaryExpr {
         return "!" + e;
     }
 
+    /* (G|-u->e:t,q) ==> (G|-!u -> !e:t',qU{t=ref(t')} */
     @Override
     public TypeResult typecheck(TypeEnv E) throws TypeError {
-        // TODO
-        return null;
+        TypeResult eTpe = e.typecheck(E);
+        TypeVar tv = new TypeVar(true);
+        Substitution sub = eTpe.s.compose(
+                eTpe.t.unify(new RefType(tv)));
+        return TypeResult.of(sub, sub.apply(tv));
     }
 
     @Override

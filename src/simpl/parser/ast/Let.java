@@ -1,10 +1,12 @@
 package simpl.parser.ast;
 
+import com.sun.org.apache.xalan.internal.xsltc.compiler.util.TypeCheckError;
 import simpl.interpreter.Env;
 import simpl.interpreter.RuntimeError;
 import simpl.interpreter.State;
 import simpl.interpreter.Value;
 import simpl.parser.Symbol;
+import simpl.typing.Substitution;
 import simpl.typing.TypeEnv;
 import simpl.typing.TypeError;
 import simpl.typing.TypeResult;
@@ -24,10 +26,15 @@ public class Let extends Expr {
         return "(let " + x + " = " + e1 + " in " + e2 + ")";
     }
 
+    /* (G|-u2->G|-e1:t1,q1; G,x:t1|-u2->G,x:t1|-e2:t2,q2)
+     * ==> (G|-let x=u1 in u2 end -> G|-let x=e1 in e2 end:t2, q1Uq2
+     */
     @Override
     public TypeResult typecheck(TypeEnv E) throws TypeError {
-        // TODO
-        return null;
+        TypeResult e1Res = e1.typecheck(E);
+        TypeResult e2Res = e2.typecheck(TypeEnv.of(E, x, e1Res.t));
+        Substitution sub = e1Res.s.compose(e2Res.s);
+        return TypeResult.of(sub, sub.apply(e2Res.t));
     }
 
     @Override

@@ -1,14 +1,12 @@
 package simpl.parser.ast;
 
+import com.sun.org.apache.xalan.internal.xsltc.compiler.util.TypeCheckError;
 import simpl.interpreter.RecValue;
 import simpl.interpreter.RuntimeError;
 import simpl.interpreter.State;
 import simpl.interpreter.Value;
 import simpl.parser.Symbol;
-import simpl.typing.Type;
-import simpl.typing.TypeEnv;
-import simpl.typing.TypeError;
-import simpl.typing.TypeResult;
+import simpl.typing.*;
 
 public class Name extends Expr {
 
@@ -22,10 +20,14 @@ public class Name extends Expr {
         return "" + x;
     }
 
+    /* (G(x)=t) ==> (G|-x=>x:t,{}) */
     @Override
     public TypeResult typecheck(TypeEnv E) throws TypeError {
-        // TODO
-        return null;
+        if (E.get(x) != null) {
+            return TypeResult.of(Substitution.IDENTITY, E.get(x));
+        }
+        throw new TypeMismatchError("Type checking:" +
+                " missing name in typing context" + this.toString());
     }
 
     @Override

@@ -10,6 +10,8 @@ import simpl.typing.TypeEnv;
 import simpl.typing.TypeError;
 import simpl.typing.TypeResult;
 
+import simpl.typing.TypeVar;
+
 public class Cond extends Expr {
 
     public Expr e1, e2, e3;
@@ -24,10 +26,24 @@ public class Cond extends Expr {
         return "(if " + e1 + " then " + e2 + " else " + e3 + ")";
     }
 
+    /* (G|-u1->e1:t1,q1; G|-u2->e2:t2,q2; G|-u3->G|-e3:t3,q3
+     * ==> (G|-if u1 then u2 else u3 ->
+     *      if e1 then e2 else e3: t2, q1Uq2Uq3U{t1=BOOL}U{t2=t3}
+     */
     @Override
     public TypeResult typecheck(TypeEnv E) throws TypeError {
-        // TODO
-        return null;
+        TypeResult e1Res = e1.typecheck(E);
+        TypeResult e2Res = e2.typecheck(E);
+        TypeResult e3Res = e3.typecheck(E);
+        Type e1Tpe = e2Res.s.compose(e3Res.s).apply(e1Res.t);
+        Type e2Tpe = e3Res.s.compose(e1Res.s).apply(e2Res.t);
+        Type e3Tpe = e1Res.s.compose(e2Res.s).apply(e3Res.t);
+        Substitution sub = e1Res.s.compose(
+                e2Res.s.compose(
+                        e3Res.s.compose(
+                            e1Tpe.unify(Type.BOOL).compose(
+                                    e2Tpe.unify(e3Tpe)))));
+        return TypeResult.of(sub, sub.apply(e2Tpe));
     }
 
     @Override

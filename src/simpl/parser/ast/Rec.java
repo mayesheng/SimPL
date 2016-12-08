@@ -6,12 +6,7 @@ import simpl.interpreter.RuntimeError;
 import simpl.interpreter.State;
 import simpl.interpreter.Value;
 import simpl.parser.Symbol;
-import simpl.typing.Substitution;
-import simpl.typing.Type;
-import simpl.typing.TypeEnv;
-import simpl.typing.TypeError;
-import simpl.typing.TypeResult;
-import simpl.typing.TypeVar;
+import simpl.typing.*;
 
 public class Rec extends Expr {
 
@@ -27,10 +22,33 @@ public class Rec extends Expr {
         return "(rec " + x + "." + e + ")";
     }
 
+    /* (G,x:a|-u -> G,x:a|-u:t,q2)
+     * ==> (G|-rec u -> G|-rec e:t, q2
+     */
     @Override
     public TypeResult typecheck(TypeEnv E) throws TypeError {
-        // TODO
-        return null;
+        TypeVar xTpe = new TypeVar(true);
+        TypeResult eRes = e.typecheck(TypeEnv.of(E, x, xTpe));
+        Substitution sub = eRes.s.compose(
+                eRes.s.apply(xTpe).unify(eRes.s.apply(eRes.t)));
+        return TypeResult.of(sub, sub.apply(eRes.t));
+
+//        TypeVar a = new TypeVar(false);
+//        TypeResult tr = e.typecheck(TypeEnv.of(E,x,a));
+//
+//        Type t1 = a;
+//        Type t2 = tr.t;
+//
+//        Substitution substitution = tr.s;
+//
+//        t1 = substitution.apply(t1);
+//        t2 = substitution.apply(t2);
+//
+//        substitution = t1.unify(t2).compose(substitution);
+//
+//        Type resultType = substitution.apply(t1);
+//
+//        return TypeResult.of(substitution,resultType);
     }
 
     @Override

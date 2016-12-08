@@ -21,6 +21,7 @@ public class IntegerLiteral extends Expr {
         return "" + n;
     }
 
+    /* () ==> (G|-int=>int:INT,{}) */
     @Override
     public TypeResult typecheck(TypeEnv E) throws TypeError {
         return TypeResult.of(Type.INT);

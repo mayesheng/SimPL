@@ -20,10 +20,18 @@ public class AndAlso extends BinaryExpr {
         return "(" + l + " andalso " + r + ")";
     }
 
+    /* (G|-u1->e1:t1,q1; G|-u2->e2:t2,q2)
+     * ==> (G|-u1 andalso u2->(u1 andalso u2):BOOL,q1Uq2U{t1=BOOL}U{t2=BOOL}
+     */
     @Override
     public TypeResult typecheck(TypeEnv E) throws TypeError {
-        // TODO
-        return null;
+        TypeResult lRes = l.typecheck(E);
+        TypeResult rRes = r.typecheck(E);
+        Substitution sub = lRes.s.compose(
+                rRes.s.compose(
+                        lRes.t.unify(Type.BOOL).compose(
+                                rRes.t.unify(Type.BOOL))));
+        return TypeResult.of(sub, Type.BOOL);
     }
 
     @Override

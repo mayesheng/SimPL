@@ -21,6 +21,7 @@ public class BooleanLiteral extends Expr {
         return "" + b;
     }
 
+    /* () ==> (G|-bool=>bool:BOOL) */
     @Override
     public TypeResult typecheck(TypeEnv E) throws TypeError {
         return TypeResult.of(Type.BOOL);

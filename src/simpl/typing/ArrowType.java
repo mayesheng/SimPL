@@ -1,5 +1,7 @@
 package simpl.typing;
 
+import com.sun.xml.internal.ws.addressing.v200408.MemberSubmissionWsaServerTube;
+
 public final class ArrowType extends Type {
 
     public Type t1, t2;
@@ -17,11 +19,15 @@ public final class ArrowType extends Type {
     @Override
     public Substitution unify(Type t) throws TypeError {
         if (t instanceof TypeVar) {
-            t.unify(this);
+            return t.unify(this);
         } else if (t instanceof ArrowType) {
             ArrowType ct = (ArrowType) t;
-            /* TODO: order matter? */
-            t1.unify(ct.t1).compose(t2.unify(ct.t2));
+            /* need mutual-info to guide further unification */
+            Substitution sub1 = t1.unify(ct.t1);
+            Substitution sub2 = t2.unify(ct.t2);
+            Type tpe1 = sub2.apply(t1);
+            Type tpe2 = sub1.apply(t2);
+            return tpe1.unify(ct.t1).compose(tpe2.unify(ct.t2));
         }
         throw new TypeMismatchError(this, t);
     }

@@ -20,10 +20,17 @@ public class Cons extends BinaryExpr {
         return "(" + l + " :: " + r + ")";
     }
 
+    /* (G|-u1->e1:a,q1; G|-u2->e2:b,q2)
+     * ==> (G|-cons(u1,u2) -> G|-cons(e1,e2):b,q1Uq2U{b=List(a)}
+     */
     @Override
     public TypeResult typecheck(TypeEnv E) throws TypeError {
-        // TODO
-        return null;
+        TypeResult lRes = l.typecheck(E);
+        TypeResult rRes = r.typecheck(E);
+        Substitution sub = lRes.s.compose(
+                rRes.s.compose(
+                        rRes.t.unify(new ListType(lRes.t))));
+        return TypeResult.of(sub, sub.apply(rRes.t));
     }
 
     @Override
