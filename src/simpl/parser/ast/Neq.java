@@ -19,6 +19,6 @@ public class Neq extends EqExpr {
     public Value eval(State s) throws RuntimeError {
         Value lval = l.eval(s);
         Value rval = r.eval(s);
-        return new BoolValue(lval.equals(rval));
+        return new BoolValue(!lval.equals(rval));
     }
 }

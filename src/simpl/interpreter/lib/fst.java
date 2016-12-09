@@ -16,7 +16,17 @@ import simpl.typing.TypeVar;
 public class fst extends FunValue {
 
     public fst() {
-        // TODO
-        super(null, null, null);
+        super(Env.empty, Symbol.symbol("arg fst"),
+                new Expr() {
+                    public TypeResult typecheck(TypeEnv E) throws TypeError {
+                        return TypeResult.of(new TypeVar(false));
+                    }
+                    public Value eval(State s) throws RuntimeError {
+                        Value val = s.E.get(Symbol.symbol("arg fst"));
+                        if (val instanceof PairValue)
+                            return ((PairValue) val).v1;
+                        throw new RuntimeError("Runtime: invalid arg of fst");
+                    }
+                });
     }
 }

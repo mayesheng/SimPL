@@ -1,10 +1,9 @@
 package simpl.parser.ast;
 
-import simpl.interpreter.RefValue;
-import simpl.interpreter.RuntimeError;
-import simpl.interpreter.State;
-import simpl.interpreter.Value;
+import simpl.interpreter.*;
 import simpl.typing.*;
+
+import java.util.Set;
 
 public class Ref extends UnaryExpr {
 
@@ -33,5 +32,6 @@ public class Ref extends UnaryExpr {
         // inc memory ptr by 1
         s.p.set(stPtr + 1);
         return new RefValue(stPtr);
+
     }
 }

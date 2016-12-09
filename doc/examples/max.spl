@@ -1,3 +1,1 @@
-(* (fn p => if (fst p) > (snd p) then fst p else snd p)(1,2) *)
-
-fst (1, 2)
+(fn p => if (fst p) > (snd p) then fst p else snd p)(2,1)

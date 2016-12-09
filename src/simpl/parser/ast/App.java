@@ -5,6 +5,9 @@ import simpl.interpreter.FunValue;
 import simpl.interpreter.RuntimeError;
 import simpl.interpreter.State;
 import simpl.interpreter.Value;
+import simpl.interpreter.PairValue;
+import simpl.interpreter.ConsValue;
+import simpl.interpreter.BoolValue;
 import simpl.parser.Symbol;
 import simpl.typing.ArrowType;
 import simpl.typing.Substitution;
@@ -41,8 +44,29 @@ public class App extends BinaryExpr {
 
     @Override
     public Value eval(State s) throws RuntimeError {
-        FunValue lval = (FunValue) l.eval(s);
-        Value rval = r.eval(s);
-        return lval.e.eval(State.of(new Env(lval.E, lval.x, rval), s.M, s.p));
+        Value lVal = l.eval(s);
+        Value rVal = r.eval(s);
+        if (lVal instanceof FunValue) {
+            FunValue e1=(FunValue)lVal;
+            s.M.put(s.p.get(),rVal);
+            s.p.set(s.p.get() + 1);
+            return e1.e.eval(State.of(new Env(e1.E, e1.x, rVal), s.M, s.p));
+        } else if (lVal instanceof PairValue && rVal instanceof BoolValue) {
+            PairValue t0 = (PairValue) lVal;
+            BoolValue v0 = (BoolValue) rVal;
+            if (v0.b)
+                return t0.v1;
+            else
+                return t0.v2;
+        } else if (lVal instanceof ConsValue){
+            ConsValue t0=(ConsValue) lVal;
+            BoolValue v0=(BoolValue) rVal;
+            if (v0.b)
+                return t0.v1;
+            else
+                return t0.v2;
+        } else {
+            throw new RuntimeError("Error!");
+        }
     }
 }
