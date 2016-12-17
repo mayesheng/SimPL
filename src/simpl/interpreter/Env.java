@@ -37,6 +37,14 @@ public class Env {
             return E.get(y);
     }
 
+    public Env getPrevEnv() {
+        return E;
+    }
+
+    public Value getValue() {
+        return v;
+    }
+
     public Env clone() {
         return new Env(E, x, v);
     }

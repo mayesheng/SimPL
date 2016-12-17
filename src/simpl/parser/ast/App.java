@@ -47,10 +47,8 @@ public class App extends BinaryExpr {
         Value lVal = l.eval(s);
         Value rVal = r.eval(s);
         if (lVal instanceof FunValue) {
-            FunValue e1=(FunValue)lVal;
-            s.M.put(s.p.get(),rVal);
-            s.p.set(s.p.get() + 1);
-            return e1.e.eval(State.of(new Env(e1.E, e1.x, rVal), s.M, s.p));
+            FunValue fv = (FunValue) lVal;
+            return fv.e.eval(State.of(new Env(fv.E, fv.x, rVal), s.M, s.p));
         } else if (lVal instanceof PairValue && rVal instanceof BoolValue) {
             PairValue t0 = (PairValue) lVal;
             BoolValue v0 = (BoolValue) rVal;

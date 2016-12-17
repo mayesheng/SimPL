@@ -3,6 +3,9 @@ package simpl.parser.ast;
 import simpl.interpreter.*;
 import simpl.typing.*;
 
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
 
 public class Ref extends UnaryExpr {
@@ -26,6 +29,29 @@ public class Ref extends UnaryExpr {
     @Override
     public Value eval(State s) throws RuntimeError {
         Value val = e.eval(s);
+
+        // start GC
+        if (true) {
+            // mark all variables and related values
+            for (Env curEnv = s.E; curEnv != Env.empty; curEnv = curEnv.getPrevEnv()) {
+                for (Value v = curEnv.getValue(); v instanceof RefValue && !v.mark; v = s.M.get(((RefValue) v).p)) {
+                    v.mark = true;
+                }
+                curEnv.getValue().mark = true;
+            }
+            // sweep through memory refs
+            for (Iterator<Mem.Entry<Integer, Value>> it = s.M.entrySet().iterator();
+                    it.hasNext(); ) {
+                Mem.Entry<Integer, Value> entry = it.next();
+                if (!entry.getValue().mark) {
+                    it.remove();
+                }
+            }
+        }
+
+
+
+
         // put evaluated value to current ptr
         int stPtr = s.p.get();
         s.M.put(stPtr, val);
