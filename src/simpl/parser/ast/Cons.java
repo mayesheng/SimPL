@@ -39,4 +39,9 @@ public class Cons extends BinaryExpr {
         Value rval = r.eval(s);
         return new ConsValue(lval, rval);
     }
+
+    @Override
+    public boolean isPure() {
+        return l.isPure() && r.isPure();
+    }
 }

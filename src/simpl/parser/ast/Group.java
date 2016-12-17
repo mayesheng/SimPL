@@ -26,4 +26,9 @@ public class Group extends UnaryExpr {
     public Value eval(State s) throws RuntimeError {
         return e.eval(s);
     }
+
+    @Override
+    public boolean isPure() {
+        return e.isPure();
+    }
 }

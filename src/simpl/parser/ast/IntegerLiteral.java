@@ -31,4 +31,9 @@ public class IntegerLiteral extends Expr {
     public Value eval(State s) throws RuntimeError {
         return new IntValue(n);
     }
+
+    @Override
+    public boolean isPure() {
+        return true;
+    }
 }

@@ -22,6 +22,9 @@ public class hd extends FunValue {
                             return ((ConsValue) val).v1;
                         throw new RuntimeError("Runtime: invalid arg of hd");
                     }
+                    public boolean isPure() {
+                        return false;
+                    }
                 });
     }
 }

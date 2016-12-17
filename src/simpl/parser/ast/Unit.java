@@ -23,4 +23,9 @@ public class Unit extends Expr {
     public Value eval(State s) throws RuntimeError {
         return Value.UNIT;
     }
+
+    @Override
+    public boolean isPure() {
+        return true;
+    }
 }

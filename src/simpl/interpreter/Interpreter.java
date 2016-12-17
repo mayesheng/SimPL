@@ -39,7 +39,7 @@ public class Interpreter {
 
     public static void main(String[] args) {
         // interpret files under doc dir
-//        interpret("doc/examples/plus.spl");
+ //       interpret("doc/examples/plus.spl");
 //        interpret("doc/examples/factorial.spl");
 //        interpret("doc/examples/gcd1.spl");
 //        interpret("doc/examples/gcd2.spl");

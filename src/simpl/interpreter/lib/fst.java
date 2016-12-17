@@ -7,6 +7,7 @@ import simpl.interpreter.RuntimeError;
 import simpl.interpreter.State;
 import simpl.interpreter.Value;
 import simpl.parser.Symbol;
+import simpl.parser.ast.BooleanLiteral;
 import simpl.parser.ast.Expr;
 import simpl.typing.TypeEnv;
 import simpl.typing.TypeError;
@@ -26,6 +27,9 @@ public class fst extends FunValue {
                         if (val instanceof PairValue)
                             return ((PairValue) val).v1;
                         throw new RuntimeError("Runtime: invalid arg of fst");
+                    }
+                    public boolean isPure() {
+                        return false;
                     }
                 });
     }

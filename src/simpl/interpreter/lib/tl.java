@@ -27,6 +27,9 @@ public class tl extends FunValue {
                             return ((ConsValue) val).v2;
                         throw new RuntimeError("Runtime: invalid arg of tl");
                     }
+                    public boolean isPure() {
+                        return false;
+                    }
                 });
     }
 }

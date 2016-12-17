@@ -28,4 +28,9 @@ public class Nil extends Expr {
     public Value eval(State s) throws RuntimeError {
         return Value.NIL;
     }
+
+    @Override
+    public boolean isPure() {
+        return true;
+    }
 }

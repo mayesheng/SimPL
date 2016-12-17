@@ -25,4 +25,9 @@ public abstract class RelExpr extends BinaryExpr {
                                 rRes.t.unify(Type.INT))));
         return TypeResult.of(sub, Type.BOOL);
     }
+
+    @Override
+    public boolean isPure() {
+        return l.isPure() && r.isPure();
+    }
 }

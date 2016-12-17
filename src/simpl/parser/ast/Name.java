@@ -40,4 +40,9 @@ public class Name extends Expr {
             return val;
         }
     }
+
+    @Override
+    public boolean isPure() {
+        return true;
+    }
 }

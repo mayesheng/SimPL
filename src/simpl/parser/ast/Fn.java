@@ -37,4 +37,9 @@ public class Fn extends Expr {
     public Value eval(State s) throws RuntimeError {
         return new FunValue(s.E, x, e);
     }
+
+    @Override
+    public boolean isPure() {
+        return e.isPure();
+    }
 }

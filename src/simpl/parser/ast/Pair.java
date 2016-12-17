@@ -33,4 +33,9 @@ public class Pair extends BinaryExpr {
         Value rval = r.eval(s);
         return new PairValue(lval, rval);
     }
+
+    @Override
+    public boolean isPure() {
+        return l.isPure() && r.isPure();
+    }
 }

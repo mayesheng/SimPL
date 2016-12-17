@@ -38,4 +38,9 @@ public class Rec extends Expr {
     public Value eval(State s) throws RuntimeError {
         return e.eval(State.of(new Env(s.E, x, new RecValue(s.E,x,e)), s.M, s.p));
     }
+
+    @Override
+    public boolean isPure() {
+        return e.isPure();
+    }
 }

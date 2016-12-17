@@ -34,4 +34,9 @@ public class Seq extends BinaryExpr {
         l.eval(s);
         return r.eval(s);
     }
+
+    @Override
+    public boolean isPure() {
+        return l.isPure() && r.isPure();
+    }
 }

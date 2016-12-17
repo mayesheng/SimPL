@@ -38,4 +38,9 @@ public class Deref extends UnaryExpr {
         Integer ptr = ((RefValue) e.eval(s)).p;
         return s.M.get(ptr);
     }
+
+    @Override
+    public boolean isPure() {
+        return false;
+    }
 }

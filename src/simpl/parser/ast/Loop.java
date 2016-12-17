@@ -49,4 +49,9 @@ public class Loop extends Expr {
         }
         throw new RuntimeError("Runtime: nonbool value in loop predicate");
     }
+
+    @Override
+    public boolean isPure() {
+        return e1.isPure() && e2.isPure();
+    }
 }

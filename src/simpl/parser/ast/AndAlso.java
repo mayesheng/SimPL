@@ -48,4 +48,9 @@ public class AndAlso extends BinaryExpr {
             throw new RuntimeError("Runtime: nonbool operand in andalso");
         return rval;
     }
+
+    @Override
+    public boolean isPure() {
+        return l.isPure() && r.isPure();
+    }
 }

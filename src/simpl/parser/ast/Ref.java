@@ -32,6 +32,10 @@ public class Ref extends UnaryExpr {
         // inc memory ptr by 1
         s.p.set(stPtr + 1);
         return new RefValue(stPtr);
+    }
 
+    @Override
+    public boolean isPure() {
+        return false;
     }
 }

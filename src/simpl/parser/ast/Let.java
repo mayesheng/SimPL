@@ -42,4 +42,9 @@ public class Let extends Expr {
         Value e1Val = e1.eval(s);
         return e2.eval(State.of(new Env(s.E, x, e1Val), s.M, s.p));
     }
+
+    @Override
+    public boolean isPure() {
+        return e1.isPure() && e2.isPure();
+    }
 }

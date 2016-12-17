@@ -56,4 +56,9 @@ public class Cond extends Expr {
         else
             return e3.eval(s);
     }
+
+    @Override
+    public boolean isPure() {
+        return e1.isPure() && e2.isPure() && e3.isPure();
+    }
 }

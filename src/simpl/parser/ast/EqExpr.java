@@ -24,4 +24,9 @@ public abstract class EqExpr extends BinaryExpr {
                         lRes.t.unify(rRes.t)));
         return TypeResult.of(sub, Type.BOOL);
     }
+
+    @Override
+    public boolean isPure() {
+        return l.isPure() && r.isPure();
+    }
 }

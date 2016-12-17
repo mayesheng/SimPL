@@ -43,4 +43,9 @@ public class Assign extends BinaryExpr {
         s.M.put(((RefValue) lhs).p, rhs);
         return Value.UNIT;
     }
+
+    @Override
+    public boolean isPure() {
+        return false;
+    }
 }

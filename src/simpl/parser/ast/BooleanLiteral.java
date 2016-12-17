@@ -31,4 +31,9 @@ public class BooleanLiteral extends Expr {
     public Value eval(State s) throws RuntimeError {
         return new BoolValue(b);
     }
+
+    @Override
+    public boolean isPure() {
+        return true;
+    }
 }

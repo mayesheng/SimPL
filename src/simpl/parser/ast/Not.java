@@ -34,4 +34,9 @@ public class Not extends UnaryExpr {
             return new BoolValue(!((BoolValue) val).b);
         throw new RuntimeError("Runtime: operand of not is not boolean");
     }
+
+    @Override
+    public boolean isPure() {
+        return e.isPure();
+    }
 }

@@ -1,13 +1,6 @@
 package simpl.parser.ast;
 
-import simpl.interpreter.Env;
-import simpl.interpreter.FunValue;
-import simpl.interpreter.RuntimeError;
-import simpl.interpreter.State;
-import simpl.interpreter.Value;
-import simpl.interpreter.PairValue;
-import simpl.interpreter.ConsValue;
-import simpl.interpreter.BoolValue;
+import simpl.interpreter.*;
 import simpl.parser.Symbol;
 import simpl.typing.ArrowType;
 import simpl.typing.Substitution;
@@ -46,11 +39,18 @@ public class App extends BinaryExpr {
     public Value eval(State s) throws RuntimeError {
         Value lVal = l.eval(s);
         Value rVal = r.eval(s);
+
         if (lVal instanceof FunValue) {
-            FunValue e1=(FunValue)lVal;
-            s.M.put(s.p.get(),rVal);
-            s.p.set(s.p.get() + 1);
-            return e1.e.eval(State.of(new Env(e1.E, e1.x, rVal), s.M, s.p));
+            FunValue fv = (FunValue) l.eval(s);
+            Value v2 = r.eval(s);
+            PureFunApp pfapp = new PureFunApp(fv.x, fv.e, v2);
+            if (State.c.containsKey(pfapp)) {
+                return State.c.get(pfapp);
+            } else {
+                Value res = fv.e.eval(State.of(new Env(fv.E, fv.x, v2),s.M,s.p));
+                State.c.put(pfapp, res);
+                return res;
+            }
         } else if (lVal instanceof PairValue && rVal instanceof BoolValue) {
             PairValue t0 = (PairValue) lVal;
             BoolValue v0 = (BoolValue) rVal;
@@ -68,5 +68,10 @@ public class App extends BinaryExpr {
         } else {
             throw new RuntimeError("Error!");
         }
+    }
+
+    @Override
+    public boolean isPure() {
+        return l.isPure() && r.isPure();
     }
 }

@@ -27,6 +27,9 @@ public class snd extends FunValue {
                             return ((PairValue) val).v2;
                         throw new RuntimeError("Runtime: invalid arg of snd");
                     }
+                    public boolean isPure() {
+                        return false;
+                    }
                 });
     }
 }

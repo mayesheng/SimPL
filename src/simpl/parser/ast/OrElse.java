@@ -43,4 +43,9 @@ public class OrElse extends BinaryExpr {
             return new BoolValue(true);
         return r.eval(s);
     }
+
+    @Override
+    public boolean isPure() {
+        return l.isPure() && r.isPure();
+    }
 }

@@ -34,4 +34,9 @@ public class Neg extends UnaryExpr {
             return new IntValue(((IntValue) val).n);
         throw new RuntimeError("Runtime: operand of neg is not Int");
     }
+
+    @Override
+    public boolean isPure() {
+        return e.isPure();
+    }
 }
