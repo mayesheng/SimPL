@@ -31,7 +31,8 @@ public class Ref extends UnaryExpr {
         Value val = e.eval(s);
 
         // start GC
-        if (true) {
+        if (Interpreter.gcEnable && s.M.size() >= 1000) {
+            System.out.println("origal memory size is " + s.M.size());
             // mark all variables and related values
             for (Env curEnv = s.E; curEnv != Env.empty; curEnv = curEnv.getPrevEnv()) {
                 for (Value v = curEnv.getValue(); v instanceof RefValue && !v.mark; v = s.M.get(((RefValue) v).p)) {
@@ -47,17 +48,24 @@ public class Ref extends UnaryExpr {
                     it.remove();
                 }
             }
+
+            System.out.println("after gc memory size is " + s.M.size());
         }
 
+        int ptr;
+        for (ptr = s.p.get(); s.M.get(ptr) != null; ptr++) {
+        }
 
+        s.M.put(ptr, val);
+        s.p.set(ptr + 1);
+        return new RefValue(ptr);
 
-
-        // put evaluated value to current ptr
-        int stPtr = s.p.get();
-        s.M.put(stPtr, val);
-        // inc memory ptr by 1
-        s.p.set(stPtr + 1);
-        return new RefValue(stPtr);
+//        // put evaluated value to current ptr
+//        int stPtr = s.p.get();
+//        s.M.put(stPtr, val);
+//        // inc memory ptr by 1
+//        s.p.set(stPtr + 1);
+//        return new RefValue(stPtr);
 
     }
 }

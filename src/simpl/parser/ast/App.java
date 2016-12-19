@@ -36,10 +36,15 @@ public class App extends BinaryExpr {
         Type e1Tpe = e2Res.s.apply(e1Res.t);
         Type e2Tpe = e1Res.s.apply(e2Res.t);
         Type appTpe = new TypeVar(true);
-        Substitution sub = e1Res.s.compose(
-                e2Res.s.compose(
-                        e1Tpe.unify(new ArrowType(e2Tpe, appTpe))));
+        Substitution sub0 = e1Tpe.unify(new ArrowType(e2Tpe, appTpe));
+        Substitution sub1 = e1Res.s.compose(sub0);
+        Substitution sub2 = e2Res.s.compose(sub0);
+        Substitution sub = sub1.compose(sub2);
         return TypeResult.of(sub, sub.apply(appTpe));
+//        Substitution sub = e1Res.s.compose(
+//                e2Res.s.compose(
+//                        e1Tpe.unify(new ArrowType(e2Tpe, appTpe))));
+        //return TypeResult.of(sub, sub.apply(appTpe));
     }
 
     @Override

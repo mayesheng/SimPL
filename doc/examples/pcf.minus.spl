@@ -1,7 +1,5 @@
-(* let minus = rec m =>
+let minus = rec m =>
       fn x => fn y => if iszero y then x else m (pred x) (pred y)
 in
   minus 125 79
-end *)
-
-rec sum => fn x => fn y => if true then y else sum (x + 1) (y + 1)
+end

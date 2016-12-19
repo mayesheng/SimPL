@@ -10,15 +10,15 @@ import simpl.typing.DefaultTypeEnv;
 import simpl.typing.TypeError;
 
 public class Interpreter {
+    static public boolean gcEnable = false;
+
 
     public void run(String filename) {
         try (InputStream inp = new FileInputStream(filename)) {
             Parser parser = new Parser(inp);
             java_cup.runtime.Symbol parseTree = parser.parse();
-            // upcast parsing reduction result from Object to Expr type
             Expr program = (Expr) parseTree.value;
-            //System.out.println(program);
-            //System.out.println(program.typecheck(new DefaultTypeEnv()).t);
+            System.out.println(program.typecheck(new DefaultTypeEnv()).t);
             System.out.println(program.eval(new InitialState()));
         } catch (SyntaxError e) {
             System.out.println("syntax error");
@@ -33,11 +33,12 @@ public class Interpreter {
 
     private static void interpret(String filename) {
         Interpreter i = new Interpreter();
-        System.out.println(filename);
+        // System.out.println(filename);
         i.run(filename);
     }
 
     public static void main(String[] args) {
+        interpret(args[0]);
         // interpret files under doc dir
 //        interpret("doc/examples/plus.spl");
 //        interpret("doc/examples/factorial.spl");
@@ -53,5 +54,6 @@ public class Interpreter {
 //        interpret("doc/examples/pcf.fibonacci.spl");
 //        interpret("doc/examples/pcf.twice.spl");
 //        interpret("doc/examples/pcf.lists.spl");
+//        interpret("doc/examples/true.spl");
     }
 }

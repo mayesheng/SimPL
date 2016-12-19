@@ -25,7 +25,16 @@ public class TypeVar extends Type {
         if (t.equals(this)) {
             return Substitution.IDENTITY;
         } else if (!t.contains(this)) {
-            return Substitution.of(this, t);
+            if (!(t instanceof TypeVar))
+                return Substitution.of(this, t);
+            TypeVar tv1 = this;
+            TypeVar tv2 = (TypeVar) t;
+
+            /* make substitution consistent with type variable order */
+            if (tv1.name.toString().compareTo(tv2.name.toString()) < 0)
+                return Substitution.of(tv2, tv1);
+            else
+                return Substitution.of(tv1, tv2);
         }
         throw new TypeCircularityError(this);
     }
