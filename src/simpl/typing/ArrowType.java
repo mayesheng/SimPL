@@ -21,13 +21,8 @@ public final class ArrowType extends Type {
         if (t instanceof TypeVar) {
             return t.unify(this);
         } else if (t instanceof ArrowType) {
-            ArrowType ct = (ArrowType) t;
-            /* need mutual-info to guide further unification */
-            Substitution sub1 = t1.unify(ct.t1);
-            Substitution sub2 = t2.unify(ct.t2);
-            Type tpe1 = sub2.apply(t1);
-            Type tpe2 = sub1.apply(t2);
-            return tpe1.unify(ct.t1).compose(tpe2.unify(ct.t2));
+            ArrowType ct = (ArrowType)t;
+            return t1.unify(ct.t1).compose(t2.unify(ct.t2));
         }
         throw new TypeMismatchError(this, t);
     }
@@ -40,6 +35,16 @@ public final class ArrowType extends Type {
     @Override
     public Type replace(TypeVar a, Type t) {
         return new ArrowType(t1.replace(a, t), t2.replace(a, t));
+    }
+
+    @Override
+    public boolean typeEquals(Type t) {
+        if (t instanceof ArrowType) {
+            ArrowType arrowType = (ArrowType)t;
+            return t1.equals(arrowType.t1) && t2.equals(arrowType.t2);
+        } else {
+            return false;
+        }
     }
 
     public String toString() {

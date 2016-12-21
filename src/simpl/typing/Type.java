@@ -10,6 +10,8 @@ public abstract class Type {
 
     public abstract Substitution unify(Type t) throws TypeError;
 
+    public abstract boolean typeEquals(Type t);
+
     public static final Type INT = new IntType();
     public static final Type BOOL = new BoolType();
     public static final Type UNIT = new UnitType();

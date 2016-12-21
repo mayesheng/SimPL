@@ -35,6 +35,11 @@ public final class RefType extends Type {
         return new RefType(this.t.replace(a, t));
     }
 
+    @Override
+    public boolean typeEquals(Type t) {
+        return t instanceof RefType && this.t.equals(((RefType) t).t);
+    }
+
     public String toString() {
         return t + " ref";
     }

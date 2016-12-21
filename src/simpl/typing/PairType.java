@@ -20,13 +20,10 @@ public final class PairType extends Type {
     public Substitution unify(Type t) throws TypeError {
         if (t instanceof TypeVar) {
             return t.unify(this);
-        } else if (t instanceof PairType) {
-            PairType ct = (PairType) t;
-            Substitution sub1 = t1.unify(ct.t1);
-            Substitution sub2 = t2.unify(ct.t2);
-            Type tpe1 = sub2.apply(t1);
-            Type tpe2 = sub1.apply(t2);
-            return tpe1.unify(ct.t1).compose(tpe2.unify(ct.t2));
+        }
+        else if (t instanceof PairType) {
+            PairType pairType = (PairType) t;
+            return t1.unify(pairType.t1).compose(t2.unify(pairType.t2));
         }
         throw new TypeMismatchError(this, t);
     }
@@ -39,6 +36,15 @@ public final class PairType extends Type {
     @Override
     public Type replace(TypeVar a, Type t) {
         return new PairType(t1.replace(a, t), t1.replace(a, t));
+    }
+
+    @Override
+    public boolean typeEquals(Type t) {
+        if (t instanceof PairType) {
+            PairType tp1 = (PairType)t;
+            return t1.equals(tp1.t1) && t2.equals(tp1.t2);
+        }
+        return false;
     }
 
     public String toString() {

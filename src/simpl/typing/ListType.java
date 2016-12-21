@@ -35,6 +35,11 @@ public final class ListType extends Type {
        return new ListType(this.t.replace(a, t));
     }
 
+    @Override
+    public boolean typeEquals(Type t) {
+        return t instanceof ListType && this.t.equals(((ListType) t).t);
+    }
+
     public String toString() {
         return t + " list";
     }

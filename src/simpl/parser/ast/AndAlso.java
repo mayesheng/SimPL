@@ -28,10 +28,10 @@ public class AndAlso extends BinaryExpr {
     public TypeResult typecheck(TypeEnv E) throws TypeError {
         TypeResult lRes = l.typecheck(E);
         TypeResult rRes = r.typecheck(E);
-        Substitution sub = lRes.s.compose(
-                rRes.s.compose(
-                        lRes.t.unify(Type.BOOL).compose(
-                                rRes.t.unify(Type.BOOL))));
+
+        Substitution sub1 = lRes.s.compose(lRes.t.unify(Type.BOOL));
+        Substitution sub2 = rRes.s.compose(rRes.t.unify(Type.BOOL));
+        Substitution sub = sub1.compose(sub2);
         return TypeResult.of(sub, Type.BOOL);
     }
 

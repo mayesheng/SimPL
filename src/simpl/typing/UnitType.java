@@ -18,7 +18,6 @@ final class UnitType extends Type {
         if (t instanceof UnitType) {
             return Substitution.IDENTITY;
         }
-        // throw new TypeMismatchError();
         throw new TypeMismatchError(this, t);
     }
 
@@ -30,6 +29,11 @@ final class UnitType extends Type {
     @Override
     public Type replace(TypeVar a, Type t) {
         return Type.UNIT;
+    }
+
+    @Override
+    public boolean typeEquals(Type t) {
+        return t instanceof UnitType;
     }
 
     public String toString() {

@@ -22,21 +22,21 @@ public class TypeVar extends Type {
 
     @Override
     public Substitution unify(Type t) throws TypeCircularityError {
-        if (t.equals(this)) {
-            return Substitution.IDENTITY;
-        } else if (!t.contains(this)) {
-            if (!(t instanceof TypeVar))
-                return Substitution.of(this, t);
-            TypeVar tv1 = this;
-            TypeVar tv2 = (TypeVar) t;
-
-            /* make substitution consistent with type variable order */
-            if (tv1.name.toString().compareTo(tv2.name.toString()) < 0)
-                return Substitution.of(tv2, tv1);
-            else
-                return Substitution.of(tv1, tv2);
+        if (!(t instanceof TypeVar) && (t.contains(this))) {
+            throw new TypeCircularityError();
         }
-        throw new TypeCircularityError(this);
+
+        Substitution sub1 = Substitution.of(this, t);
+        try {
+            Type t1 = TypeEnv.sub.apply(this);
+            if (t1 != this) {
+                Substitution s2 = t1.unify(t);
+                return sub1.compose(s2);
+            }
+        } catch (TypeError e) {
+            throw new TypeCircularityError(this);
+        }
+        return sub1;
     }
 
     public String toString() {
@@ -47,6 +47,11 @@ public class TypeVar extends Type {
     public boolean contains(TypeVar tv) {
         /* both are type variables: only compare name for them */
         return this.name.equals(tv.name);
+    }
+
+    @Override
+    public boolean typeEquals(Type t) {
+        return t instanceof TypeVar && this.name.equals(((TypeVar) t).name);
     }
 
     @Override

@@ -32,6 +32,11 @@ final class IntType extends Type {
         return Type.INT;
     }
 
+    @Override
+    public boolean typeEquals(Type t) {
+        return t instanceof IntType;
+    }
+
     public String toString() {
         return "int";
     }

@@ -27,9 +27,8 @@ public class Cons extends BinaryExpr {
     public TypeResult typecheck(TypeEnv E) throws TypeError {
         TypeResult lRes = l.typecheck(E);
         TypeResult rRes = r.typecheck(E);
-        Substitution sub = lRes.s.compose(
-                rRes.s.compose(
-                        rRes.t.unify(new ListType(lRes.t))));
+        Substitution sub1 = lRes.s.compose(rRes.s);
+        Substitution sub = sub1.compose(sub1.apply(rRes.t).unify(sub1.apply(new ListType(lRes.t))));
         return TypeResult.of(sub, sub.apply(rRes.t));
     }
 

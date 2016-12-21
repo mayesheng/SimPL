@@ -7,41 +7,27 @@ public class DefaultTypeEnv extends TypeEnv {
     private TypeEnv E;
 
     public DefaultTypeEnv() {
-        // TODO: may need more type var here
-//        TypeVar tv1 = new TypeVar(true);
-//        TypeVar tv2 = new TypeVar(true);
-//        E = TypeEnv.of(
-//                TypeEnv.of(
-//                        TypeEnv.of(
-//                                TypeEnv.of(
-//                                        TypeEnv.of(
-//                                                TypeEnv.of(
-//                                                        TypeEnv.of(TypeEnv.empty,
-//                                                                Symbol.symbol("fst"), new ArrowType(new PairType(tv1, tv2), tv1)),
-//                                                        Symbol.symbol("snd"), new ArrowType(new PairType(tv1, tv2), tv2)),
-//                                                Symbol.symbol("hd"), new ArrowType(new ListType(tv1), tv1)),
-//                                        Symbol.symbol("tl"), new ArrowType(new ListType(tv1), new ListType(tv1))),
-//                                Symbol.symbol("iszero"), new ArrowType(Type.INT, Type.BOOL)),
-//                        Symbol.symbol("pred"), new ArrowType(Type.INT, Type.INT)),
-//                Symbol.symbol("succ"), new ArrowType(Type.INT,Type.INT)
-//        );
+        TypeVar a = new TypeVar(true);
+        TypeVar b = new TypeVar(true);
+        TypeVar c = new TypeVar(true);
+        TypeVar d = new TypeVar(true);
+        TypeVar e = new TypeVar(true);
+        TypeVar f = new TypeVar(true);
 
-
-        TypeVar tv1 = new TypeVar(true);
-        TypeVar tv2 = new TypeVar(true);
-        E = TypeEnv.of(
-                TypeEnv.of(
-                        TypeEnv.of(
-                                TypeEnv.of(
-                                        TypeEnv.of(
-                                                TypeEnv.of(
-                                                        TypeEnv.of(TypeEnv.empty, Symbol.symbol("fst"), new ArrowType(new PairType(new TypeVar(true), new TypeVar(true)), new TypeVar(true))),
-                                                        Symbol.symbol("snd"), new ArrowType(new PairType(new TypeVar(true), new TypeVar(true)), new TypeVar(true))),
-                                                Symbol.symbol("hd"), new ArrowType(new ListType(new TypeVar(true)), new TypeVar(true))),
-                                        Symbol.symbol("tl"), new ArrowType(new ListType(new TypeVar(true)), new ListType(new TypeVar(true)))),
-                                Symbol.symbol("iszero"), new ArrowType(Type.INT, Type.BOOL)),
-                        Symbol.symbol("pred"), new ArrowType(Type.INT, Type.INT)),
-                Symbol.symbol("succ"), new ArrowType(Type.INT,Type.INT));
+        E = TypeEnv.of(E, Symbol.symbol("fst"),
+                new ArrowType(new PairType(a, b), a));
+        E = TypeEnv.of(E, Symbol.symbol("snd"),
+                new ArrowType(new PairType(c, d), d));
+        E = TypeEnv.of(E, Symbol.symbol("hd"),
+                new ArrowType(new ListType(e), e));
+        E = TypeEnv.of(E, Symbol.symbol("tl"),
+                new ArrowType(new ListType(f), new ListType(f)));
+        E = TypeEnv.of(E, Symbol.symbol("iszero"),
+                new ArrowType(Type.INT, Type.BOOL));
+        E = TypeEnv.of(E, Symbol.symbol("pred"),
+                new ArrowType(Type.INT, Type.INT));
+        E = TypeEnv.of(E, Symbol.symbol("succ"),
+                new ArrowType(Type.INT, Type.INT));
     }
 
     @Override

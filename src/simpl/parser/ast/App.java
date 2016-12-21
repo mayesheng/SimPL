@@ -31,16 +31,29 @@ public class App extends BinaryExpr {
      * ==> (G|-u1 u2 -> (e1 e2):a, q1Uq2U{t1=t2->a}*/
     @Override
     public TypeResult typecheck(TypeEnv E) throws TypeError {
-        TypeResult e1Res = l.typecheck(E);
-        TypeResult e2Res = r.typecheck(E);
-        Type e1Tpe = e2Res.s.apply(e1Res.t);
-        Type e2Tpe = e1Res.s.apply(e2Res.t);
-        Type appTpe = new TypeVar(true);
-        Substitution sub0 = e1Tpe.unify(new ArrowType(e2Tpe, appTpe));
-        Substitution sub1 = e1Res.s.compose(sub0);
-        Substitution sub2 = e2Res.s.compose(sub0);
-        Substitution sub = sub1.compose(sub2);
-        return TypeResult.of(sub, sub.apply(appTpe));
+        TypeResult t1=l.typecheck(E);
+        TypeResult t2=r.typecheck(E);
+        if (t1.t instanceof TypeVar) {
+            Substitution s1=t1.t.unify(new ArrowType(t2.t,new TypeVar(false)));
+            TypeEnv.compose(s1);
+            return TypeResult.of(t1.s.compose(t2.s.compose(s1)),TypeEnv.sub.apply(((ArrowType)s1.apply(t1.t)).t2));
+        }
+        if (t1.t instanceof ArrowType) {
+            Substitution s2=((ArrowType)t1.t).t1.unify(t2.t);
+            TypeEnv.compose(s2);
+            return TypeResult.of(t1.s.compose(t2.s.compose(s2)), ((ArrowType)s2.apply((ArrowType)t1.t)).t2);
+        }
+        throw new TypeError("not match");
+//        TypeResult e1Res = l.typecheck(E);
+//        TypeResult e2Res = r.typecheck(E);
+//        Type e1Tpe = e2Res.s.apply(e1Res.t);
+//        Type e2Tpe = e1Res.s.apply(e2Res.t);
+//        Type appTpe = new TypeVar(true);
+//        Substitution sub0 = e1Tpe.unify(new ArrowType(e2Tpe, appTpe));
+//        Substitution sub1 = e1Res.s.compose(sub0);
+//        Substitution sub2 = e2Res.s.compose(sub0);
+//        Substitution sub = sub1.compose(sub2);
+//        return TypeResult.of(sub, sub.apply(appTpe));
 //        Substitution sub = e1Res.s.compose(
 //                e2Res.s.compose(
 //                        e1Tpe.unify(new ArrowType(e2Tpe, appTpe))));

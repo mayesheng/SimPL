@@ -29,9 +29,11 @@ public class Rec extends Expr {
     public TypeResult typecheck(TypeEnv E) throws TypeError {
         TypeVar xTpe = new TypeVar(true);
         TypeResult eRes = e.typecheck(TypeEnv.of(E, x, xTpe));
+        Substitution sub1 = eRes.s.apply(xTpe).unify(eRes.s.apply(eRes.t));
         Substitution sub = eRes.s.compose(
-                eRes.s.apply(xTpe).unify(eRes.s.apply(eRes.t)));
+                sub1.apply(xTpe).unify(sub1.apply(eRes.t)));
         return TypeResult.of(sub, sub.apply(eRes.t));
+
     }
 
     @Override

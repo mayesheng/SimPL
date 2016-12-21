@@ -34,6 +34,11 @@ final class BoolType extends Type {
         return Type.BOOL;
     }
 
+    @Override
+    public boolean typeEquals(Type t) {
+        return t instanceof BoolType;
+    }
+
     public String toString() {
         return "bool";
     }

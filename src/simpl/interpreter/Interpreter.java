@@ -12,7 +12,6 @@ import simpl.typing.TypeError;
 public class Interpreter {
     static public boolean gcEnable = false;
 
-
     public void run(String filename) {
         try (InputStream inp = new FileInputStream(filename)) {
             Parser parser = new Parser(inp);
